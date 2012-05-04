@@ -1,0 +1,4 @@
+Various Scripts used for SHAPE-Seq analysis
+
+perl: Bio::Perl Scripts
+cpp: SeqAn Apps
