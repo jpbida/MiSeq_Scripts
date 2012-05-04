@@ -8,25 +8,14 @@
 #include <seqan/basic.h>
 using namespace seqan;
 typedef StringSet<CharString> THaystacks;
-typedef FragmentStore<>::TReadSeqStore TReadSeqStore;
-typedef Value<TReadSeqStore>::Type TReadSeq;
-typedef FragmentStore<>::TContigStore TContigStore;
-typedef Value<TContigStore>::Type TContigStoreElement;
-typedef TContigStoreElement::TContigSeq TContigSeq;
-typedef Index<TReadSeqStore, IndexQGram<Shape<Dna, UngappedShape<11> >, OpenAddressing> > TIndex;
-typedef Pattern<TIndex, Swift<SwiftSemiGlobal> > TPattern;
-typedef Finder<TContigSeq, Swift<SwiftSemiGlobal> > TFinder;
-typedef FragmentStore<>::TAlignedReadStore TAlignedReadStore;
-typedef Value<TAlignedReadStore>::Type TAlignedRead;
-typedef FragmentStore<>::TContigStore TContigStore;
-const double EPSILON = 0.1;
-typedef Iterator<String<char> >::Type TIterator;
 // FRAGMENT(open_file)
 int main (int argc, char const * argv[])
 {
 	SEQAN_PROTIMESTART(loadTime);
+//Read in command line arguments pointing to the paired end reads and the expected library
+//Example
+//      ./makeAln tail2reads 3primereads library.fasta
 
-FragmentStore<> fragStore;
 	MultiSeqFile multiSeqFile1;
 	MultiSeqFile multiSeqFile2;
 	MultiSeqFile multiSeqFile3;
@@ -50,20 +39,8 @@ FragmentStore<> fragStore;
 
 // FRAGMENT(reserve)
 	unsigned seqCount1 = length(multiSeqFile1);
-	StringSet<String<Dna5Q> > seqs1;
-//	StringSet<CharString> seqIDs;
-
-	reserve(seqs1, seqCount1, Exact());
-//	reserve(seqIDs, seqCount, Exact());
-	
     unsigned seqCount2 = length(multiSeqFile2);
-	StringSet<String<Dna5Q> > seqs2;
-//	StringSet<CharString> seqIDs;
-	reserve(seqs2, seqCount2, Exact());
-	
     unsigned seqCount3 = length(multiSeqFile3);
-
-//	reserve(seqIDs, seqCount, Exact());
 
 // FRAGMENT(read_sequences)
 	String<char> seq1;
@@ -74,14 +51,16 @@ FragmentStore<> fragStore;
 	CharString id1;
 	CharString id2;
     THaystacks haystacks;
-std::cout << "Indexing Sequences.." << std::endl;
+
+// Index library sequences for alignment 
+std::cout << "Indexing Sequences..";
 for(unsigned j=0; j< seqCount3; j++){
 		assignSeq(seq3, multiSeqFile3[j], format3);    // read sequence
         appendValue(haystacks, seq3);
-        std::cout << j << std::endl;
 }
-                    Index<THaystacks> index(haystacks);
-                        Finder<Index<THaystacks> > finder(haystacks);
+Index<THaystacks> index(haystacks);
+Finder<Index<THaystacks> > finder(haystacks);
+std::cout << "completed" << std::endl;
 
 for (unsigned i = 0; i < seqCount1; ++i)
 	{
@@ -95,7 +74,7 @@ for (unsigned i = 0; i < seqCount1; ++i)
 reverseComplement(seq1);
 //Get ID and MID
 //		std::cout << seq1 << std::endl;
- String<char> ndl = "[AGCT]{8}AAAGAAACAACAACAACAAC[AGCT]{4}";
+String<char> ndl = "[AGCT]{8}AAAGAAACAACAACAACAAC[AGCT]{4}";
 Finder<String<char> > finder1(seq1);
 Pattern<String<char>, WildShiftAnd> pattern1(ndl);
 
@@ -124,57 +103,15 @@ while (find(finder3, pattern3)) {
      if(mpos >=0){
          mpos=mpos-length(seq2);
      ::std::cout << mid << " " << uid << " " << mpos << " " << mscr <<" "<< seq2 << ::std::endl;
-//int  mpos=beginPosition(finder).i2;
-  //   ::std::cout << mid << " " << uid << " " << mpos  <<" "<< seq2 << ::std::endl;
 }
 
 }
 clear(finder);
 
-
-//Get Library Sequence with UID 
-
-
-//::std::FILE * fl = ::std::fopen("testfile.fa", "ab");
-//write(fl, seq2, "frag", Fasta());
-//close (fl);
-
-/*
-String<char> ndl("CCT");
-
-Finder<String<char> > fnd(haystk);
-Pattern<String<char>, MyersUkkonen> pat(ndl);
-
-setScoreLimit(pat, -1);//Edit Distance = -1. -2 would be worse 
-while (find(fnd, pat)) {
-     ::std::cout << position(fnd) << ": " << getScore(pat) << "\n";
 }
-
-*/
 }
-
-//Get Library Sequence
-
-//Align seq2 to library
-
-//If alignment quality is > threshold 
-
-
-		// convert ascii to values from 0..62
-		// store dna and quality together in Dna5Q
-//		for (unsigned j = 0; j < length(qual1) && j < length(seq1); ++j)
-//			assignQualityValue(seq1[j], (int)(ordValue(qual1[j]) - 33));
-
-		// we use reserve and append, as assign is not supported
-		// by StringSet<..., Owner<ConcatDirect<> > >
-//		appendValue(seqs2, seq2, Generous());
-//		appendValue(seqIDs, id, Generous());
-	}
-
-// FRAGMENT(output)
 	std::cout << "Loading " << seqCount1 << " sequences took " << SEQAN_PROTIMEDIFF(loadTime);
 	std::cout << " seconds." << std::endl << std::endl;
-
 	return 0;
 }
 
