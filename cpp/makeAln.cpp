@@ -7,7 +7,7 @@
 #include <seqan/store.h>
 #include <seqan/basic.h>
 using namespace seqan;
-
+typedef StringSet<CharString> THaystacks;
 typedef FragmentStore<>::TReadSeqStore TReadSeqStore;
 typedef Value<TReadSeqStore>::Type TReadSeq;
 typedef FragmentStore<>::TContigStore TContigStore;
@@ -73,8 +73,17 @@ FragmentStore<> fragStore;
 	CharString qual2;
 	CharString id1;
 	CharString id2;
+    THaystacks haystacks;
+std::cout << "Indexing Sequences.." << std::endl;
+for(unsigned j=0; j< seqCount3; j++){
+		assignSeq(seq3, multiSeqFile3[j], format3);    // read sequence
+        appendValue(haystacks, seq3);
+        std::cout << j << std::endl;
+}
+                    Index<THaystacks> index(haystacks);
+                        Finder<Index<THaystacks> > finder(haystacks);
 
-	for (unsigned i = 0; i < seqCount1; ++i)
+for (unsigned i = 0; i < seqCount1; ++i)
 	{
 		assignSeq(seq1, multiSeqFile1[i], format1);    // read sequence
 		assignQual(qual1, multiSeqFile1[i], format1);  // read ascii quality values
@@ -94,31 +103,33 @@ if(find(finder1, pattern1)) {
 int pos1=position(finder1);
 String<char> mid=infixWithLength(seq1, (pos1-4),4);
 String<char> uid=infixWithLength(seq1, (pos1-31),28);
-	for (unsigned j = 0; j < seqCount3; ++j)
-	{
-        assignSeq(seq3,multiSeqFile3[j], format3);
-Finder<String<char> > finder(seq3);
-Pattern<String<char>, WildShiftAnd> pattern(uid);
+
+//::std::cout << mid << ":" << uid << ::std::endl;
+Pattern<CharString> pattern(uid);
 if(find(finder, pattern)) {
-//::std::cout << mid << ":" << seq2 << ::std::endl;
+        //std::cout << beginPosition(finder).i1 << std::endl;
+ assignSeq(seq3, multiSeqFile3[beginPosition(finder).i1], format3);    // read sequence
+
 Finder<String<char> > finder3(seq3);
 Pattern<String<char>, MyersUkkonen> pattern3(seq2);
-setScoreLimit(pattern3, -4);//Edit Distance = -1. -2 would be worse 
+setScoreLimit(pattern3, -10);//Edit Distance = -1. -2 would be worse 
 int mpos=-1;
 int mscr=-100;
 while (find(finder3, pattern3)) {
      int cscr=getScore(pattern3);
-     if(cscr > mscr){mscr=cscr;
+    if(cscr > mscr){mscr=cscr;
      mpos=position(finder3);
      }
 }
      if(mpos >=0){
          mpos=mpos-length(seq2);
-     ::std::cout << mid << " " << uid << " " << mpos << " " << mscr <<" "<< seq2 << "\n";
+     ::std::cout << mid << " " << uid << " " << mpos << " " << mscr <<" "<< seq2 << ::std::endl;
+//int  mpos=beginPosition(finder).i2;
+  //   ::std::cout << mid << " " << uid << " " << mpos  <<" "<< seq2 << ::std::endl;
 }
 
 }
-    }
+clear(finder);
 
 
 //Get Library Sequence with UID 
