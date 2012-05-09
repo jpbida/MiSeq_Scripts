@@ -4,3 +4,6 @@ Various Scripts used for SHAPE-Seq analysis
     Bio::Perl Scripts
 /cpp 
     SeqAn Apps
+
+
+    Cumulative Histogram and freq plot

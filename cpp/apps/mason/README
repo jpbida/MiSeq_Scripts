@@ -1,0 +1,82 @@
+Mason - A Read Simulator
+========================
+
+Copyright: (c) 2010 by Manuel Holtgrewe
+License:   GPL v3.0
+Homepage:  http://www.seqan.de/projects/mason.html
+
+Mason is a read simulator for second-generation sequencing data.  At
+the moment, the simulation of Illumina, 454 and Sanger reads is
+supported.
+
+How It Works
+------------
+
+Reads are sampled from a reference sequence.  The reference sequence
+is either read from a FASTA file or generated randomly given a
+background distribution for nucleotides.
+
+Then, modified copies of the reference sequence are generated to
+simulate haplotypes.
+
+Reads are then uniformly sampled from these haplotypes and sequencing
+technology specific errors are introduced.
+
+How To Call Mason
+-----------------
+
+The first argument specifies the sequencing technology to use.  To get
+a full list of options, use the argument --help.
+
+    mason illumina [OPTIONS] SEQUENCE --help
+    mason 454      [OPTIONS] SEQUENCE --help
+    mason sanger   [OPTIONS] SEQUENCE --help
+
+Important Global Options
+------------------------
+
+  -s --seed NUM            The seed for the random number generator.  Use this
+                           to simulate multiple different read sets with
+                           otherwise identical parameters or in parallel.
+
+  -N --num-reads NUM       Number of reads to generate.
+
+  -sq --simulate-qualities If given, qualities are simulated for the reads and
+                           the result is a FASTQ file, is FASTA otherwise.
+
+  -o --output-file FILE    Path to the resulting FASTA/FASTQ file.
+
+Important Illumina Options
+--------------------------
+
+  -n --read-length NUM     Length of the reads to simulate.
+
+Important Sanger/454 Options
+----------------------------
+
+  -nm --read-length-mean   Mean length of the reads to simulate.
+
+  -ne --read-length-error  Error of the read length to simulate.  If normal
+                           distribution is used for read lengths (also see
+                           --read-length-uniform), this is the standard
+                           deviation.
+
+Examples
+--------
+
+Simulate 100'000 Illumina mate-pairs with qualities from drosophila
+genome without qualities to file myreads_1.fasta and myreads_2.fasta.
+
+    mason illumina -n 100000 -mp -o myreads.fasta drosophila.genom
+
+Simulate 1'000 454 reads from diploid data with qualities to
+myreads.fastq:
+
+    mason 454 -n 1000 -sq -hn 2 -o myreads.fastq drosophila.genom
+
+Simulate 1'000 Illumina reads with qualities and error profile file
+from errors.txt, scaled by 0.5 to myreads.fastq:
+
+    mason illumina -n 1000 -pmmf errors.txt -pmms 0.5 \
+        -sq -o myreads.fastq drosophila.genom
+

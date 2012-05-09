@@ -1,0 +1,47 @@
+= SeqAn Changelog =
+
+Add a new list item '''AT THE TOP''' for each change (excluding trivial things like changes to whitespace and comments).
+Link to changsets with `[CHANGESET-NUMBER]` and tickets with `#TICKET-NUMBER` whenever possible.
+You can use Trac wiki syntax.
+
+== Trunk ==
+
+ * Splitting file ''sequence_multiple.h'' into ''string_set*.h'', ''iter_concat_virtual.h'', and ''sequence_concatenator.h''.
+ * Bound check in `iter()`.
+ * Adding `SEQAN_IS_64_BIT` and `SEQAN_IS_64_BIT` macros, defined to either `0` or `1`, depending on the platform.
+ * Adjusting `MUM` and `MEM` to new naming schema. (#836)
+ * Adding `SEQAN_OMP_PRAGMA` to hide `#pragma omp` when not compiling with OpenMP to suppress warnings. (#353)
+ * The test system deletes all files with the same name as temporary file names generated during the tests. (#377)
+ * Adding documentation for the alphabets `Dna5Q` and `DnaQ` which allow to store 5/4 nucleotides along with the quality in one byte (`char`).
+ * Defining integer types (__int8, __uint8, ...) for MinGW, too.
+ * Making snp_store compile with LLVM.
+ * Removing type `Byte` since it clashes with zlib (#843).  Note that the types `Ascii` and `Unicode` are deprecated and will be removed soon (#849).
+ * Fixing a bug in `iter()` with iterator (#848).
+ * Adding module '''parallel''', bootstrapping with atomic primitives and atomic `min()`/`max()` functions, fully tested.
+ * Slightly optimized assign for strings when source and target are empty.
+ * Slightly optimized `empty()` for strings.
+ * Fixing problem with MaxValue<>, MinValue<> of RNG with multiple compilation units.
+ * Also defining `std::swap` for strings and string sets.
+ * Fixing bug in `windowFindNext()`.
+ * Setting flags for RelDebug build type correctly for apps.
+ * Removed unused and undocumented `string_value_expand.h` / `String<TValue, ValueExpand<...> >`
+ * Various comment / formatting / documentation changes and annotations in sequence module.
+ * Renaming `string_stack.h` to `string_block.h` and adding header field for author.
+ * Adding comment about value expand string, also see #839.
+ * Renaming `lexical.h` to `sequence_lexical.h` adding note on the location of `ordValue`, also see #838.
+ * Renaming `string_pointer.h` to `adapt_array_pointer.h` and adding some notes for issues to review, e.g. #837.
+ * Improving coding style compliance of Array String implementation.
+ * Making documentation about assigning to CStyle SeqAn strings more clear, adjusting comments.
+ * Documenting `reAlign()`, various small comment and whitespace fixes in consensus module.
+ * Comparison operator for tag selector.
+ * Experimental BAM reading/writing.
+ * Allowing the store elements of fragment stores to be comparable.
+ * Adding bundled version of ''samtools''.
+ * Fixing documentation for `resize()`, `reAlign()`, `reverse()`, and `score()`.
+ * Fixing `lowerBoundAlignedReads()` and `lowerBoundAlignedReads()` when searching by begin and end position.
+ * Properly documenting `lowerBoundAlignedReads()` and `upperBoundAlignedReads()`.
+ * Fixing documentation about include for ''misc/misc_cmdparser.h'', was ''seqan/misc.h'', corrected to ''seqan/misc/misc_cmdparser.h''.
+ * Assertion in semiglobal SWIFT finder that hits begin <= end.
+ * Initializing state.errors in Myers Ukkonen banded pattern initialization.
+
+== Release 1.3 ==
