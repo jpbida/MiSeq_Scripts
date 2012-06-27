@@ -1,9 +1,20 @@
-Various Scripts used for SHAPE-Seq analysis
+### Building the SeqAN library ###
 
-/perl
-    Bio::Perl Scripts
-/cpp 
-    SeqAn Apps
+I only added the makeAln.cpp application to the seqAn library in the cpp directory
+If you have trouble building seqAn, take a look at their website. 
 
+http://www.seqan.de/
 
-    Cumulative Histogram and freq plot
+This worked for me
+
+cd cpp
+mkdir -p build/Debug
+cd build/Debug
+cmake ../../cmake -DCMAKE_BUILDTYPE=Debug
+
+### Example ###
+
+cd ./cpp/example
+./run.sh
+
+### Use the analysis script in rpgms to create histograms ####
