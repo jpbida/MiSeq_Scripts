@@ -1,11 +1,24 @@
-### Building the SeqAN library ###
+####################################################################################################
+###                                    makeAln.cpp                                               ###
+####################################################################################################
+makeAln.cpp aligns pair-end reads from a shape-seq experiments with cDNA matching  the following 
+sequence format
 
-I only added the makeAln.cpp application to the seqAn library in the cpp directory
+[RNA Sequence]-[Unique SeqID]-[Constant Seq]-[Experimental Id]
+
+see an example of the generated outputs in the ./example/results directory 
+
+####################################################################################################
+###                               Building the SeqAN library                                     ###
+####################################################################################################
+The program makeAln.cpp was built using functions from the SeqAn library. 
 If you have trouble building seqAn, take a look at their website. 
 
 http://www.seqan.de/
 
-This worked for me
+####################################################################################################
+###  Compiling 
+####################################################################################################
 
 cd cpp
 mkdir -p build/Debug
@@ -14,7 +27,6 @@ cmake ../../cmake -DCMAKE_BUILDTYPE=Debug
 
 ### Example ###
 
-cd ./cpp/example
-./run.sh
+cd ./example
+./add.sh
 
-### Use the analysis script in rpgms to create histograms ####

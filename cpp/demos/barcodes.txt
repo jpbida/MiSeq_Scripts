@@ -1,0 +1,32 @@
+Barcode file
+
+Each sequence in the library has two ids, the experiment_id and the sequence_id. The experiment_id associates the given
+sequence with a particular experimental condition and is appended to the sequence during reverse transcription.  The
+sequence_id is a unique identifier on the 3' end of the RNA moleucle.  Both of these IDs are captured in the reads
+contained in the first argument to the shapeAln program.  The format of these ids are stored in the barcodes.txt file
+and is the last argument to shapeAln.
+
+Example barcodes.txt
+
+> DMS:GACT
+[AGCT]{8}AAAGAAACAACAACAACAAC
+> SHAPE:GAAG
+[AGCT]{8}AAAGAAACAACAACAACAAC
+> CMCT:GTTG
+[AGCT]{8}AAAGAAACAACAACAACAAC
+> NOMOD:CTCT
+[AGCT]{8}AAAGAAACAACAACAACAAC
+
+
+Notice the regular expression in the front of the sequence.  This tells the program where to look for the sequence_id.
+The sequence_id's are stored in the library.fa program with the full sequences.
+
+The program begins by creating a map from the ID space to the sequence space
+
+
+
+
+
+
+
+

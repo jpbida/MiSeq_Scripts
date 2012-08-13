@@ -1,0 +1,10 @@
+>bcode1
+ACCAGGCGCTGG
+>bcode2
+GAGGCCTTGGCC
+>bcode3
+CTTTAAAATATA
+>bcode4
+TGACTTGCACAT
+>bcode5
+GAGT

@@ -1,0 +1,82 @@
+In this example you will use the makeAln program to analyze a shape-seq experiment that contains all single and double
+mutants of the Addenine riboswitch. 
+
+Step 1: Create a FASTA file with the known sequences of the RNA molecules in your library
+    label.pl - Program creates labels from a list of sequences by comparing each to a wild type sequence and identifying
+    the position in the sequence that changed.  See how library.lst is converted to library.fast by the label.sh program
+    in ./scripts
+
+Step 2: Run a Paired-end sequencing experiment to generate two fastq files.  The first file must contain the
+experimental id and the sequence id separated by a constant sequence region.  Examples are given in 
+
+./data/Phix_S1_L001_R1_001.fastq
+./data/Phix_S1_L001_R2_001.fastq
+
+Step 3: Create the barcodes.fasta file
+
+If we look at the first sequence in Phix_S1_L001_R1_001.fastq 
+
+------------------------------------------------------------
+@M00653:20:000000000-A0RK6:1:1101:19770:2071 1:N:0:1
+GAGGCCTTGGCCGTTGTTGTTGTTGTTTCTTTCCTATCCTGGNCGGTCGGA
++
+------------------------------------------------------------
+we see it is the reverse complement of 
+
+[CCAGGATAGG]AAAGAAACAACAACAACAAC[GGCCAAGGCCTC]
+
+The experiment id is [GGCCAAGGCCTC] and should appear as a FASTA entry in the barcodes.fasta file. An example is given
+below. Multiple sequences can be matched to the same experiment id(NOMOD is GCCC and CCAGCGCCTGT) and the ids can have
+variable lengths. However, if a smaller length id is contained in a larger id it will be incorrectly mapped. For
+example.
+
+>small
+GCCC
+>large 
+GCCCGCATT
+
+barcodes.fasta
+------------------------------------------------------------
+>NOMOD
+GCCC
+>NOMOD
+CCAGCGCCTGGT
+>NA1M7_1
+GGCCAAGGCCTC
+>NA1M7_2
+TATATTTTAAAG
+>A1M7
+ATGTGCAAGTCA
+>NA1M7_3
+ACTC
+------------------------------------------------------------
+
+The sequence id is [CCAGGATAGG] and should appear in the library.fasta file in a sequence immediately before the
+constant region AAAGAAACAACAACAACAAC.
+
+Step 4: Determine the length of the sequence id to match.  You need to input the length of the unique identify for each
+sequence.  The program will extract sequences of the identified length from the reads in Phix... and match them to the
+library members.
+
+
+Step 5: Run makeAln.  Take a look at the example add.sh 
+
+Step 6: Plot the output. The condensed output has the format 
+
+output format
+------------------------------------------------------------
+experiment_id,sequence_id,alignemnt_position,alignment_quality
+
+The expanded format adds the full sequence_id, the ids found in the Phix files, and the full wt sequence. 
+
+The R program plot.r can extract the single point mutations and build a 2D plot of the reactivity for each experimental
+condition. 
+
+cd ./scripts
+>R
+rcmd> source("plot.r")
+Images for the analysis are generated and saved in the results directory
+
+
+
+

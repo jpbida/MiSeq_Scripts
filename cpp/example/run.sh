@@ -1,6 +1,6 @@
 #!/bin/bash
 
-../build/Debug/demos/makeAln Phix_S1_L001_R1_001.fastq Phix_S1_L001_R2_001.fastq library.fa > therm1.dat
+../build/Debug/demos/makeAln Phix_S1_L001_R1_001.fastq Phix_S1_L001_R2_001.fastq library.fa barcodes.txt
 
 ### This creates a dataset containing
 #CATC CGGATAGAAAAGAAACAACAACAACAAC 6 -1 ATTAATTCTTTAATATAAACTATCCGTTCG
